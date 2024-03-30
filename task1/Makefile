@@ -13,3 +13,4 @@ clean:
 	@rm -f D
 	@rm -f makeA
 	@rm -f sparse
+	@rm -f result.txt
