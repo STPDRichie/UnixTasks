@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-const int FIVE_MINUTES = 5; // 300;
+const int LOCK_TIME = 1;
 
 const int PID_SIZE = sizeof(pid_t);
 
@@ -42,7 +42,7 @@ void main(int argc, char** argv) {
     close(lck_file);
     printf("Файл %s заблокирован для использования\n", file_name);
 
-    sleep(FIVE_MINUTES);
+    sleep(LOCK_TIME);
 
     char* buff = (char*)calloc(100, sizeof(int));
 
