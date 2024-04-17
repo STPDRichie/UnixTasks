@@ -1,9 +1,9 @@
 .PHONY: build clean
 
 build: clean
-	gcc lock_program.c -o lock_program
+	gcc lock.c -o lock
 
 clean:
-	@rm -f lock_program
-	@rm -f file.lck
+	@rm -f lock
+	@rm -rf *.lck
 	@rm -f result.txt

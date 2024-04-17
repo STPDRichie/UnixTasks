@@ -43,7 +43,7 @@ void sigint_handler(int signum, char* file_name) {
     }
 
     FILE* result_file = fopen("result.txt", "a");
-    fprintf(result_file, "[pid:%d] всего блокировок - %d\n", pid, locks_count);
+    fprintf(result_file, "[pid:%d] Всего блокировок - %d\n", pid, locks_count);
     fclose(result_file);
     exit(0);
 }

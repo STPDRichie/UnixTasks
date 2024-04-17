@@ -1,2 +1,2 @@
-file.lck
-lock_program
+*.lck
+lock
