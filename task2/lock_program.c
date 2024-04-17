@@ -22,7 +22,7 @@ void main(int argc, char** argv) {
         return;
     }
 
-    int pid = (int) getpid();
+    int pid = (int)getpid();
 
     char str_pid[PID_SIZE];
     sprintf(str_pid, "%d", pid);
@@ -32,31 +32,40 @@ void main(int argc, char** argv) {
     char lck_file_name[MAX_FILENAME_LENGTH];
     sprintf(lck_file_name, "%s.lck", file_name);
 
-    while (file_exists(lck_file_name)) {
-        printf("Файл %s уже используется другим процессом. Ожидание...\n", file_name);
-        sleep(1);
-    }
+    while (1) {
+        if (file_exists(lck_file_name)) {
+            sleep(0.01);
+            // printf("Файл %s уже используется другим процессом. Ожидание...\n", file_name);
+            continue;
+        }
 
-    int lck_file = open(lck_file_name, O_WRONLY | O_CREAT, 0666);
-    write(lck_file, str_pid, strlen(str_pid));
-    close(lck_file);
-    printf("Файл %s заблокирован для использования\n", file_name);
-
-    sleep(LOCK_TIME);
-
-    char* buff = (char*)calloc(100, sizeof(int));
-
-    lck_file = open(lck_file_name, O_RDONLY, 0666);
-    int file_pid_index = read(lck_file, buff, 10);
-    buff[file_pid_index] = '\0';
-
-    if (strcmp(buff, str_pid) != 0) {
-        printf("Произошла ошибка\n");
+        int lck_file = open(lck_file_name, O_WRONLY | O_CREAT, 0666);
+        write(lck_file, str_pid, strlen(str_pid));
         close(lck_file);
-        return;
-    }
+        printf("Файл %s заблокирован для использования\n", file_name);
 
-    close(lck_file);
-    remove(lck_file_name);
-    printf("Файл %s свободен для использования\n", file_name);
+        sleep(LOCK_TIME); // Какие-то действия с файлом
+
+        char* buff = (char*)calloc(100, PID_SIZE);
+
+        if (!file_exists(lck_file_name)) {
+            printf("Произошла ошибка\n");
+            return;
+        }
+
+        lck_file = open(lck_file_name, O_RDONLY, 0666);
+
+        int file_pid_index = read(lck_file, buff, 10);
+        buff[file_pid_index] = '\0';
+
+        if (strcmp(buff, str_pid) != 0) {
+            printf("Произошла ошибка\n");
+            close(lck_file);
+            return;
+        }
+
+        close(lck_file);
+        remove(lck_file_name);
+        printf("Файл %s свободен для использования\n", file_name);
+    }
 }
