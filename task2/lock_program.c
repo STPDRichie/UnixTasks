@@ -14,8 +14,6 @@ int file_exists(char* filename) {
     return access(filename, F_OK) == 0;
 }
 
-int sprintf(char* str, const char* format, ...);
-
 void main(int argc, char** argv) {
     if (argc != 2) {
         printf("Передано неверное количество параметров");
