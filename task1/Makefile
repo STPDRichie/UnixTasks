@@ -1,8 +1,9 @@
 .PHONY: build clean
 
 build: clean
-	gcc makeA.c -o makeA
-	gcc sparse.c -o sparse
+	@gcc makeA.c -o makeA
+	@gcc sparse.c -o sparse
+	@echo "Имя скрипта: ./sparse"
 
 clean:
 	@rm -f A
