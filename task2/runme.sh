@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function cleanup() {
+    tput cnorm
+}
+
+trap cleanup EXIT
+
+tput civis
+
 rm -f result.txt
 touch file
 
@@ -27,5 +35,7 @@ for pid in ${pids_list[@]}
 do
     kill -2 "$pid"
 done
+
+tput cnorm
 
 rm -f nohup.out
